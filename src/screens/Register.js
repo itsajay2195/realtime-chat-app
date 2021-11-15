@@ -25,7 +25,7 @@ export default function Register({ navigation }) {
                 var user = userCredential.user;
                 user.updateProfile({
                     displayName: name,
-                    number:number,
+                    phoneNumber:'9710115165',
                     photoURL: imageURL ? imageUrl : "https://www.trackergps.com/canvas/images/icons/avatar.jpg"
                 }).catch(function (error) {
                     console.warn("first error")
@@ -52,7 +52,14 @@ export default function Register({ navigation }) {
         }).catch(function (error) {
             alert(error.message)
         })
-        
+
+        db.collection("users").doc(email).set({
+            name:name,
+            number:number,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        }).catch(function (error) {
+            alert(error.message)
+        })
     }
 
 

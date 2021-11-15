@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { View, Text, TextInput, SafeAreaView, StyleSheet } from 'react-native'
 import LottieView from 'lottie-react-native'
 import Button from '../components/Button'
 import firebase from '../../Firebase'
+
 
 export default function Login({ navigation }) {
     const [email, setEmail] = useState('')
@@ -23,8 +24,8 @@ export default function Login({ navigation }) {
                 // Signed in
                 var user = userCredential.user;
                 //navigate the user  to the chat screen 
-                console.warn(user)
-                navigation.navigate('Chat')
+                // console.warn(user)
+                navigation.navigate('Chat',{userDetails:userCredential.user})
             })
             .catch((error) => {
                 var errorMessage = error.message;
@@ -32,12 +33,21 @@ export default function Login({ navigation }) {
             });
     }
 
-    const addNumberToFirebase = ()=>{
-        db.collection("users").add({
-            number:number
-
-        })
-    }
+    useEffect(() => {
+        const auth = firebase.auth();
+        const unsubscribe = auth.onAuthStateChanged(function (user) {
+        if (user) {
+        navigation.navigate('Chat',{userDetails:user})
+        } else {
+        // No user is signed in.
+        
+        }
+        });
+        return unsubscribe;
+        }, [])
+        
+    
+    
 
     return (
         <SafeAreaView style={styles.container}>

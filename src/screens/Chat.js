@@ -13,7 +13,7 @@ export default function Chat({navigation,...props}) {
     const db = firebase.firestore();
     const [contacts, setContacts] = useState([])
     const [allUsers, setAlllUsers] = useState([])
-    const {email}= props.route.params.userDetails
+    props.route.params.userDetails
  
 
     useEffect(() => {
